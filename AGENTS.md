@@ -223,7 +223,9 @@ Logs, CSV, configs, plaintext:
 </Text Streams>
 
 <Source Code>
-Refactors, rewrites, audits:
+Code Research, Refactors, rewrites, audits:
+- demongrep
+- osgrep
 - ast-grep
 - semgrep
 - grit
