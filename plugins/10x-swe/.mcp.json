@@ -1,6 +1,11 @@
 {
     "mcpServers": {
-		"osgrep": {
+        "grep": {
+			"type": "http",
+            "url": "https://mcp.grep.app",
+			"headers": {}
+        },
+		"osgrep": { 
 			"command": "osgrep",
 			"args": ["mcp"]
 		},
