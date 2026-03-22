@@ -1,6 +1,6 @@
 # 10x-swe
 
-A terminal-first AI agent plugin with 57 skills for software engineering, debugging, architecture, and development workflows.
+ A terminal-first AI agent plugin with 60 skills for software engineering, debugging, architecture, and development workflows.
 
 ## Skills
 
@@ -31,6 +31,7 @@ A terminal-first AI agent plugin with 57 skills for software engineering, debugg
 | ghidra | Reverse engineer binaries using Ghidra's headless analyzer |
 | obsidian-cli | Interact with Obsidian vaults via CLI |
 | obsidian-markdown | Create Obsidian-flavored Markdown with wikilinks, callouts, and embeds |
+| research-readwise-obsidian | Research topics with Readwise CLI and produce Obsidian-ready notes with source-linked evidence |
 | playwright | Browser automation for web testing and interaction |
 | tmux | Remote control tmux sessions for interactive CLIs |
 | using-git-worktrees | Isolated git worktrees for feature work |
