@@ -38,6 +38,11 @@ Use web search tool to find authoritative documentation:
 
 Select **3–5 high-quality URLs** maximum.
 
+**Save discovered sources to Readwise Reader** for future retrieval:
+```bash
+readwise reader-create-document --url "<source_url>" --tags "self-learning,<topic>"
+```
+
 If no credible sources found, ask user to provide a URL.
 
 ---

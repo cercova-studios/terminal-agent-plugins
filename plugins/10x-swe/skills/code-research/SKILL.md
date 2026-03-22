@@ -192,7 +192,19 @@ Use chrome-devtools-mcp to open up webpages and crawl through them for deeper in
 ```
 </step>
 
-<step name="6" label="Synthesize Findings">
+<step name="6" label="Save High-Value Sources to Readwise">
+When a source is highly relevant (authoritative docs, key blog posts, insightful discussions), persist it for future retrieval:
+```bash
+# Save a URL to Reader with research tags
+readwise reader-create-document --url "https://..." --tags "code-research,<topic>"
+
+# Create a highlight for a key finding or quote
+readwise readwise-create-highlights --highlights '[{"text": "key finding text", "title": "Source Title", "source_url": "https://...", "note": "Why this matters"}]'
+```
+Only save sources scoring 2-3 on relevance (directly answers the question or provides strong supporting context). Do not save noise.
+</step>
+
+<step name="7" label="Synthesize Findings">
 Combine findings from all sources:
 - Cross-reference information across sources
 - Identify consensus patterns vs. edge cases

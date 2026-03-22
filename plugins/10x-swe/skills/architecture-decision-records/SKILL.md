@@ -440,6 +440,20 @@ adr link 2 "Complements" 1 "Is complemented by"
 - **Don't be vague** - Specific decisions, specific consequences
 - **Don't forget implementation** - ADR without action is waste
 
+## Saving References to Readwise
+
+When an ADR references external sources (blog posts, docs, RFCs, benchmarks), save them to Readwise Reader for durable retrieval and highlight the specific passages that informed the decision:
+
+```bash
+# Save the reference source
+readwise reader-create-document --url "https://martinfowler.com/..." --tags "adr,<adr-number>,<topic>"
+
+# Highlight the passage that informed the decision
+readwise reader-create-highlight --document-url "https://martinfowler.com/..." --text "the exact passage that supports the decision"
+```
+
+This links the ADR's References section to retrievable, highlighted evidence — useful for future ADR reviews and when revisiting decisions.
+
 ## Resources
 
 - [Documenting Architecture Decisions (Michael Nygard)](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
