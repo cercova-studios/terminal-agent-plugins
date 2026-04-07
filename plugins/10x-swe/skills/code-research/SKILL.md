@@ -16,7 +16,7 @@ This resolves `AGENT_ROOT` to `./.agents` in the current working directory.
 
 When researching code, follow the **tool escalation ladder**:
 
-1. **Local first** - Use Grep/Glob/Read for codebase exploration
+1. **Local first** - For pure code lookup, invoke `code-search` skill first; otherwise use Grep/Glob/Read
 2. **Terminal research** - Use fast CLI tools (w3m/lynx, curl, jq, rg, fd, gh) and DDG bangs
 3. **Built-in web** - Use WebSearch/WebFetch for documentation and articles
 4. **Skills & Scripts** - Use `gh-cli` skill for GitHub, scripts for Stack Overflow
@@ -65,6 +65,10 @@ Start simple. Escalate only when simpler tools fail.
 </tier>
 
 <tier name="2" label="Lightweight Scripts & Skills (CLI Access)">
+**Code search routing (`code-search`)** - Use for dedicated local code finding tasks:
+- semantic search, structural/AST search, repo layout discovery, literal text matches
+- invoke first when the user intent is "find code in this repo"
+
 **GitHub CLI (`gh`)** - Use the `gh-cli` skill for comprehensive GitHub operations:
 - Repository info, issues, PRs, code search, Actions, releases, and more
 - Invoke with: `Skill: gh-cli`
@@ -79,6 +83,18 @@ ${AGENT_ROOT}/skills/code-research/scripts/stackoverflow-api.sh "error message o
 </tier>
 
 <tier name="3" label="MCP Servers (Heavy Artillery)">
+**Contextplus MCP** - Local code intelligence for large repos
+- Use for: structure trees, file skeletons, semantic symbol search, blast-radius checks
+- Always pass **repo-root-relative** paths (not cwd-relative paths)
+- Path normalization workflow:
+  ```bash
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+  CWD="$(pwd)"
+  TARGET="$CWD/src/lib.rs"   # or any absolute target discovered from current task
+  RELATIVE_PATH="$(python3 -c 'import os,sys; print(os.path.relpath(sys.argv[1], sys.argv[2]))' "$TARGET" "$REPO_ROOT")"
+  # Use RELATIVE_PATH with contextplus tools
+  ```
+
 **Exa MCP** - Semantic web search with AI understanding
 - Use for: Finding related libraries, discovering best practices, semantic similarity search
 - Better than WebSearch when you need conceptual matches, not keyword matches
@@ -107,6 +123,9 @@ Classify the research type:
 <step name="2" label="Start Local">
 For any codebase question, explore locally first:
 ```
+# If the primary intent is local code finding, route to code-search skill first
+Skill: code-search
+
 # Find relevant files
 Glob: **/*{keyword}*.{ts,py,go}
 
@@ -177,6 +196,10 @@ ${AGENT_ROOT}/skills/code-research/scripts/stackoverflow-api.sh "React useEffect
 <step name="5" label="Escalate to MCP When Needed">
 For complex research needs:
 ```
+# Local code intelligence (Contextplus)
+# 1) compute repo-root-relative path before calling contextplus
+# 2) call contextplus with RELATIVE_PATH (for example: extensions/swe_distiller/src/lib.rs)
+
 # Semantic search (Exa)
 mcp__web_search_exa: "best practices for React state management 2024"
 mcp__get_code_context_exa: "langgraph deepagent cli"
@@ -241,6 +264,7 @@ Write: research-{topic}-{date}.md
 | Situation | Tool Choice |
 |-----------|-------------|
 | "How does X work in this codebase?" | Grep → Read → Task/Explore |
+| "Find where code lives in this repo" | `code-search` skill first, then continue research if needed |
 | "What's the best library for X?" | WebSearch → Exa MCP |
 | "How do I use library X?" | WebFetch (docs URL) → Deepwiki MCP |
 | "Why am I getting error X?" | Grep (local) → stackoverflow-api.sh → WebSearch |
@@ -248,6 +272,7 @@ Write: research-{topic}-{date}.md
 | "Show me the docs for X" | WebFetch → Deepwiki → Chrome MCP |
 | "Quickly skim docs" | w3m/lynx → curl + rg/sed |
 | "Find issues related to X" | gh-cli skill → `gh issue/search` |
+| "Understand large local codebase quickly" | Contextplus (`get_context_tree`/`get_file_skeleton`) with repo-root-relative paths |
 | "Search code for pattern X" | rg (local) → Exa MCP |
 | "Need fast CLI search" | rg/fd/bat (fallback: grep/find/cat) |
 | "Navigate to JS-heavy site" | Chrome MCP (browser_navigate + browser_snapshot) |
@@ -256,6 +281,10 @@ Write: research-{topic}-{date}.md
 <anti_patterns>
 <pitfall name="mcp_first">
 Don't reach for MCP servers immediately. Try built-in tools and scripts first—they're faster and use less context.
+</pitfall>
+
+<pitfall name="contextplus_wrong_path">
+Don't pass cwd-relative paths to contextplus when cwd is not repo root. Always normalize to repo-root-relative paths first.
 </pitfall>
 
 <pitfall name="ignoring_local">
@@ -279,6 +308,7 @@ Don't spam endpoints with aggressive scraping. Use retries, backoff, and caching
 Research is complete when:
 - Query is fully answered with supporting evidence
 - Multiple sources consulted when appropriate
+- Pure local code-finding requests are routed through `code-search` before broader research
 - Tool selection followed the escalation ladder (simplest first)
 - Findings are synthesized, not just listed
 - Sources are cited for traceability
