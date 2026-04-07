@@ -1,7 +1,8 @@
 {
     "mcpServers": {
 		"fff": {
-			"command": "fff-mcp"
+			"command": "fff-mcp",
+			"args": []
 		},
         "grep": {
 			"type": "http",
