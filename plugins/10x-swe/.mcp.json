@@ -1,26 +1,29 @@
 {
     "mcpServers": {
-		"fff": {
-			"command": "fff-mcp",
-			"args": []
-		},
-        "grep": {
-			"type": "http",
-            "url": "https://mcp.grep.app",
-			"headers": {}
-        },
-        "context7": {
-            "command": "bunx",
-            "args": ["-y", "@upstash/context7-mcp"]
-        },
-        "exa": {
-            "type": "http",
-            "url": "https://mcp.exa.ai/mcp?tools=web_search_exa,get_code_context_exa,crawling_exa",
-            "headers": {}
-        },
-        "deepwiki": {
-            "type": "http",
-            "url": "https://mcp.deepwiki.com/mcp"
-        }
-    }
+      "fff": {
+       "command": "fff-mcp",
+       "args": []
+      },
+      "grep": {
+        "type": "http",
+        "url": "https://mcp.grep.app"
+      },
+      "context7": {
+        "command": "bunx",
+        "args": ["-y", "@upstash/context7-mcp"]
+      },
+      "exa": {
+        "type": "http",
+        "url": "https://mcp.exa.ai/mcp?tools=web_search_exa,get_code_context_exa,crawling_exa",
+        "headers": {}
+      },
+      "deepwiki": {
+        "type": "http",
+        "url": "https://mcp.deepwiki.com/mcp"
+      },
+      "doppler": {
+        "command": "bunx",
+        "args": ["-y", "@dopplerhq/mcp-server"]
+      }
+  }
 }
