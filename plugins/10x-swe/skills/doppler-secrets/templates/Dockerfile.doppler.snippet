@@ -1,0 +1,27 @@
+# Dockerfile snippet — bake the Doppler CLI into the image so the
+# container can call `doppler run` at startup using an injected
+# DOPPLER_TOKEN service token.
+#
+# Run with:
+#   docker run -e DOPPLER_TOKEN="$DOPPLER_TOKEN" my-app:latest
+#
+# NEVER bake the token into the image. NEVER COPY a .env file in.
+
+# --- Install Doppler CLI (works on debian/alpine bases that have curl/sh) ---
+# For alpine, install curl first:
+#   RUN apk add --no-cache curl gnupg
+# For debian/ubuntu:
+#   RUN apt-get update && apt-get install -y --no-install-recommends curl gnupg && rm -rf /var/lib/apt/lists/*
+
+RUN (curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh \
+     || wget -t 3 -qO- https://cli.doppler.com/install.sh) | sh
+
+# --- Run the app under doppler run ---
+# Replace the CMD with your real start command.
+ENTRYPOINT ["doppler", "run", "--"]
+CMD ["node", "server.js"]
+
+# Optional health probe pattern: keep the probe outside `doppler run`
+# so it does not consume secret-bearing env if not needed.
+# HEALTHCHECK --interval=30s --timeout=5s --start-period=10s \
+#   CMD curl -fsS http://localhost:8080/health || exit 1

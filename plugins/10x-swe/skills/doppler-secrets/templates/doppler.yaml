@@ -1,0 +1,29 @@
+# Project-root doppler.yaml — commit this file.
+#
+# Allows teammates and CI to bind the repo to the correct
+# Doppler project + config non-interactively:
+#
+#   doppler setup --no-interactive
+#
+# Single-project repo:
+setup:
+  - project: my-app
+    config: dev
+
+# Monorepo example (uncomment and adjust):
+# setup:
+#   - path: backend/
+#     project: my-app-api
+#     config: dev
+#   - path: frontend/
+#     project: my-app-web
+#     config: dev
+#   - path: worker/
+#     project: my-app-worker
+#     config: dev
+
+# CLI behavior flags (optional):
+# flags:
+#   analytics: true
+#   env-warning: true
+#   update-check: true
