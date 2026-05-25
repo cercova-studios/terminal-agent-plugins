@@ -16,7 +16,7 @@ Help the assistant choose the right code-search strategy for the task: start wit
 </default_order>
 
 <priority>
-Default to osgrep for semantic code search. If the repo does not have a usable root index, create or refresh it before searching. Use `fff-mcp --help` to confirm availability; if it is unavailable, fall back to ripgrep-based discovery.
+Default to the `osgrep` CLI for semantic code search. If the repo does not have a usable root index, create or refresh it with `osgrep index` before searching. Confirm availability with `osgrep --help`; if unavailable, fall back to ripgrep-based discovery. Never start the `osgrep mcp` or `osgrep serve` background processes — use the CLI commands directly.
 </priority>
 </quick_start>
 
